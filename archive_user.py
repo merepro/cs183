@@ -7,28 +7,49 @@
 
 #Archive User Script
 
-import sys,getopt
+import sys,getopt, time, subprocess
 
-def archive_users():
-    return
+def validate_login_existence(login):
+    group_dict = {}
+    group_file = open('/etc/passwd','r')
+    for lines in group_file:
+        line_list = lines.split(':')
+        group_dict[line_list[0]] = line_list[2]
+    if login in group_dict:
+        return True
+    print >> sys.stderr,'Error: login name does not exist in /etc/passwd'
+    sys.exit(1)
+
+def archive_user(login):
+    timestamp = str(int(time.time()))
+    print timestamp
+    cmd = 'mv /home/'+login+' ./archived_homedirs/login.'+timestamp
+    print cmd
+    #subprocess.Popen(str(cmd),stdout=subprocess.PIPE,
+    #                           stderr=subprocess.PIPE,shell=True)
+    cmd2 = 'sed /'+login+'/d /etc/passwd'
+    print cmd2
+    #subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,
+#                     stderr=subprocess.PIPE,shell=True)
 
 def main(argv):
     login_name = ''
     try:
         opts, args = getopt.getopt(argv,"l:")
     except getopt.GetoptError:
-        print 'usage: ./archive_user.py -l <login>'
+        print >> sys.stderr,'usage: ./archive_user.py -l <login>'
         sys.exit(1)
     if len(opts) != 1:
-        print 'usage: ./archive_user.py -l <login>'
+        print >> sys.stderr,'usage: ./archive_user.py -l <login>'
         sys.exit(1)
     for opt, arg in opts:
         if opt in ("-l","--login"):
             login_name = arg
-            print login_name
         else:
-            print 'usage: ./archive_user.py -l <login>'
+            print >> sys.stderr,'usage: ./archive_user.py -l <login>'
             sys.exit(1)
+    if validate_login_existence(login_name):
+        archive_user(login_name)
     return
 
 if __name__ == "__main__":
