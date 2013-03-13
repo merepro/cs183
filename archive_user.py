@@ -24,13 +24,11 @@ def archive_user(login):
     timestamp = str(int(time.time()))
     print timestamp
     cmd = 'mv /home/'+login+' ./archived_homedirs/login.'+timestamp
-    print cmd
-    #subprocess.Popen(str(cmd),stdout=subprocess.PIPE,
-    #                           stderr=subprocess.PIPE,shell=True)
-    cmd2 = 'sed /'+login+'/d /etc/passwd'
-    print cmd2
-    #subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,
-#                     stderr=subprocess.PIPE,shell=True)
+    subprocess.Popen(str(cmd),stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE,shell=True)
+    cmd2 = 'sed /'+login+'/d /etc/passwd > ./test; mv -f ./test /etc/passwd; rm -f ./test'
+    subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,shell=True)
 
 def main(argv):
     login_name = ''
