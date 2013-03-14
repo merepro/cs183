@@ -61,30 +61,39 @@ def validate_shell_option(shell):
 def validate_checks(login_name,user_id,group_id,home_dir,shell,passwd_dict,group_dict):
     if not check_syntax_login(login_name):
         print >> sys.stderr,'Invalid login syntax, must be alphanumeric'
+        os.system("./logging.py 'WARN Invalid login syntax, must be alphanumeric'")
         sys.exit(1)
     elif not validate_login(login_name,passwd_dict):
         print >> sys.stderr,'Error: login exists in /etc/passwd'
+        os.system("./logging.py 'WARN Error: login exists in /etc/passwd'")
         sys.exit(1)
     elif not check_syntax_uid(user_id):
         print >> sys.stderr, 'Invalid user ID syntax, must be numeric'
+        os.system("./logging.py 'WARN Invalid user ID syntax, must be numeric'")
         sys.exit(1)
     elif not validate_uid(user_id,passwd_dict):
         print >> sys.stderr, 'Error: user ID exists in /etc/passwd'
+        os.system("./logging.py 'WARN Error: user ID exists in /etc/passwd'")
         sys.exit(1)
     elif not check_syntax_gid(group_id):
         print >> sys.stderr, 'Invalid group ID syntax, must be numeric'
+	os.system("./logging.py 'WARN Invalid group ID syntax, must be numeric'")
         sys.exit(1)
     elif not validate_gid(group_id,group_dict):
         print >> sys.stderr, 'Error: group ID does not exist in /etc/passwd'
+	os.system("./logging.py 'WARN Error: group ID does not exist in /etc/passwd'")
         sys.exit(1)
     elif not validate_directory(home_dir,passwd_dict):
         print >> sys.stderr, 'Error: home directory does not exist in /etc/passwd'
+	os.system("./logging.py 'WARN Error: home directory does not exist in /etc/passwd'")
         sys.exit(1)
     elif not validate_dir_path(home_dir):
         print >> sys.stderr, 'Error: directory is not a directory within home'
+	os.system("./logging.py 'WARN Error: directory is not a directory within home'")
         sys.exit(1)
     elif not validate_shell_option(shell):
         print >> sys.stderr, 'Invalid shell option, choices are /bin/bash or /bin/tcsh'
+	os.system("./logging.py 'WARN Invalid shell option, choices are /bin/bash or /bin/tcsh'")
         sys.exit(1)
     else:
         return True
@@ -97,6 +106,7 @@ def create_user(login,user_id,group_id,GECOS,home_dir,shell):
                      shell=True).communicate()
     subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,stderr=subprocess.PIPE,
                      shell=True).communicate()
+    os.system("./logging.py 'INFO Created user'")
     return
 
 
@@ -139,7 +149,7 @@ def main(argv):
     if validate_checks(login_name,user_id,group_id,home_dir,shell,passwd_dict,group_dict):
 	os.system("./backup.py /etc/passwd")
         create_user(login_name,user_id,group_id,GECOS,home_dir,shell)
-
+	
     return
 
 if __name__ == "__main__":

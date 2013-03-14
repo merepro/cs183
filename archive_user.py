@@ -18,6 +18,7 @@ def validate_login_existence(login):
     if login in group_dict:
         return True
     print >> sys.stderr,'Error: login name does not exist in /etc/passwd'
+    os.system("./logging.py 'WARN Error: login name does not exist in /etc/passwd'")
     sys.exit(1)
 
 def archive_user(login):
@@ -29,6 +30,7 @@ def archive_user(login):
     cmd2 = 'sed /'+login+'/d /etc/passwd > ./test; mv -f ./test /etc/passwd; rm -f ./test'
     subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,shell=True)
+    os.system("./logging.py 'INFO Archived user homedirectory'")
 
 def main(argv):
     login_name = ''

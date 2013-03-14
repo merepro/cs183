@@ -15,12 +15,14 @@ def check_syntax_group_name(group_name):
     if regex:
         return True
     print >> sys.stderr, "Invalid group name syntax"
+    os.system("./logging.py 'WARN Invalid group name syntax'")
     sys.exit(1)
 def check_syntax_gid(gid):
     regex = re.search('(^0*(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$)',gid)
     if regex:
         return True
     print >> sys.stderr, "Invalid GID syntax"
+    os.system("./logging.py 'WARN Invalid GID syntax'")
     sys.exit(1)
 
 def add_group(name,gid):
@@ -28,6 +30,7 @@ def add_group(name,gid):
     cmd = 'echo '+name+':x:'+gid+': >> /etc/group'
     print cmd
     subprocess.Popen(str(cmd),stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()[0]
+    os.system("./logging.py 'INFO Added group'")
     return 0
 
 def validate_group_name_and_gid(name,gid,group_dict):
@@ -35,6 +38,7 @@ def validate_group_name_and_gid(name,gid,group_dict):
         return True
 
     print >> sys.stderr, "Error validating group name or GID"
+    os.system("./logging.py 'WARN Error validating group name or GID'")
     sys.exit(1)
 
 def main(argv):
