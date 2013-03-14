@@ -24,7 +24,8 @@ def check_syntax_gid(gid):
     sys.exit(1)
 
 def add_group(name,gid):
-    cmd = 'groupadd -g '+ gid + ' ' + name
+    #cmd = 'groupadd -g '+ gid + ' ' + name
+    cmd = 'echo '+name+':x:'+gid+': >> /etc/group'
     print cmd
     subprocess.Popen(str(cmd),stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()[0]
     return 0
@@ -32,7 +33,7 @@ def add_group(name,gid):
 def validate_group_name_and_gid(name,gid,group_dict):
     if not name in group_dict and not gid in group_dict.values():
         return True
-  
+
     print >> sys.stderr, "Error validating group name or GID"
     sys.exit(1)
 
