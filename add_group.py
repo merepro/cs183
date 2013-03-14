@@ -7,7 +7,7 @@
 
 #Add Group Script
 
-import sys, getopt, re, subprocess
+import sys, getopt, re, subprocess,os
 
 
 def check_syntax_group_name(group_name):
@@ -32,6 +32,7 @@ def add_group(name,gid):
 def validate_group_name_and_gid(name,gid,group_dict):
     if not name in group_dict and not gid in group_dict.values():
         return True
+  
     print >> sys.stderr, "Error validating group name or GID"
     sys.exit(1)
 
@@ -64,6 +65,7 @@ def main(argv):
         if check_syntax_group_name(group_name) and check_syntax_gid(group_id):
             print "key and value have correct syntax"
             add_group(group_name, group_id)
+	    os.system("./backup.py /etc/group")
         return
 
     return 0
