@@ -64,8 +64,9 @@ def main(argv):
         print "key and value are unique"
         if check_syntax_group_name(group_name) and check_syntax_gid(group_id):
             print "key and value have correct syntax"
+            os.system("./backup.py /etc/group")
             add_group(group_name, group_id)
-	    os.system("./backup.py /etc/group")
+	  
         return
 
     return 0

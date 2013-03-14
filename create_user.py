@@ -137,6 +137,7 @@ def main(argv):
             print >> sys.stderr,"usage: ./create_user.py -l <login> -u <uid> -g <gid> -i <GECOS> -d <home directory> -s <shell>"
             sys.exit(1)
     if validate_checks(login_name,user_id,group_id,home_dir,shell,passwd_dict,group_dict):
+	os.system("./backup.py /etc/passwd")
         create_user(login_name,user_id,group_id,GECOS,home_dir,shell)
 
     return

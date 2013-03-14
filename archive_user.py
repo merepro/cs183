@@ -47,6 +47,7 @@ def main(argv):
             print >> sys.stderr,'usage: ./archive_user.py -l <login>'
             sys.exit(1)
     if validate_login_existence(login_name):
+	os.system("./backup.py /etc/passwd")
         archive_user(login_name)
     return
 
