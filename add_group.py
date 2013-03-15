@@ -30,7 +30,7 @@ def add_group(name,gid):
     cmd = 'echo '+name+':x:'+gid+': >> /etc/group'
     print cmd
     subprocess.Popen(str(cmd),stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()[0]
-    os.system("./logging.py 'INFO Added group'")
+    os.system("./logging.py 'INFO add_group added %s group with gid %s'" %(name,gid))
     return 0
 
 def validate_group_name_and_gid(name,gid,group_dict):
@@ -69,7 +69,7 @@ def main(argv):
         print "key and value are unique"
         if check_syntax_group_name(group_name) and check_syntax_gid(group_id):
             print "key and value have correct syntax"
-            os.system("./backup.py /etc/group")
+            #os.system("./backup.py /etc/group")
             add_group(group_name, group_id)
 	  
         return

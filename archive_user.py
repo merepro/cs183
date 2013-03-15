@@ -30,7 +30,7 @@ def archive_user(login):
     cmd2 = 'sed /'+login+'/d /etc/passwd > ./test; mv -f ./test /etc/passwd; rm -f ./test'
     subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,shell=True)
-    os.system("./logging.py 'INFO Archived user homedirectory'")
+    os.system("./logging.py 'INFO Archived user %s homedirectory'"%login)
 
 def main(argv):
     login_name = ''

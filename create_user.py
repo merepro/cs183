@@ -106,7 +106,7 @@ def create_user(login,user_id,group_id,GECOS,home_dir,shell):
                      shell=True).communicate()
     subprocess.Popen(str(cmd2),stdout=subprocess.PIPE,stderr=subprocess.PIPE,
                      shell=True).communicate()
-    os.system("./logging.py 'INFO Created user'")
+    os.system("./logging.py 'INFO create_user: created user %s:%s:%s:%s:%s:%s'"%(login,user_id,group_id,Gecos,home_dir,shell))
     return
 
 
